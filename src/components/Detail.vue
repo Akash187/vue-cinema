@@ -96,13 +96,13 @@
 
   #movieDetail{
     padding: $l-size $m-height;
-    height: 400px;
+    height: 450px;
     max-width: 95%;
     display: flex;
   }
 
   #movieDetail img{
-    height: 400px;
+    height: 450px;
   }
 
   .detail{
@@ -151,7 +151,22 @@
     font-size: $l-size;
   }
 
+  .detail .overview p::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  .detail .overview p::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+
+  .detail .overview p::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+
   .detail .overview p{
+    overflow-y: scroll;
+    max-height: $l-height;
     font-weight: 200;
     font-size: $m-size;
     padding: $vs-size 0;
@@ -166,14 +181,19 @@
     }
   }
 
-  @media only screen and (max-width: 840px){
+  @media only screen and (max-width: 900px){
+
+    #movieDetail{
+      height: 450px;
+    }
 
     #movieDetail img {
       display: none;
     }
+
   }
 
-  @media only screen and (max-width: 580px) {
+  @media only screen and (max-width: 680px) {
     .detail{
       padding: $vs-size $s-size;
     }
@@ -210,7 +230,9 @@
     }
 
     .detail .overview p{
-      font-size: 14px;
+      overflow-y: scroll;
+      max-height: $m-height;
+      font-size: $s-size;
     }
   }
 
@@ -231,17 +253,17 @@
     .detail .overview div{
       font-size: $m-size;
     }
+
+    .detail .overview p{
+      overflow-y: scroll;
+      max-height: $s-height;
+      font-size: $s-size;
+    }
   }
 
   @media screen and (max-device-height: 380px) and (orientation : landscape){
     #movieDetail{
       height: 250px;
-    }
-
-    .detail .overview p{
-      overflow-y: hidden;
-      max-height: 36px;
-      font-size: $s-size;
     }
 
     .detail .extraDetail div .detail-header{

@@ -47,5 +47,6 @@
 
   .title{
     padding-top: 0;
+    color: $off-white;
   }
 </style>
