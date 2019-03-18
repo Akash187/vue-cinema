@@ -1,7 +1,9 @@
 <template>
   <div id="navbar">
     <div class="navbar-child">
-      <img id="project-logo" alt="Project logo" src="../assets/logo.png">
+      <router-link to="/">
+        <img id="project-logo" alt="Project logo" src="../assets/logo.png">
+      </router-link>
       <span id="project-title">Vue Cinema</span>
     </div>
     <div class="navbar-child">
@@ -31,12 +33,15 @@
 <style lang="scss" scoped>
   #navbar{
     display: flex;
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
     background: $dark-blue;
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
     padding: $vs-size $m-size;
-    box-shadow: 2px 2px 2px #888888;
+    box-shadow: 2px 2px 2px $light-blue;
   }
 
   .navbar-child{
@@ -66,5 +71,6 @@
     padding: 6px;
     font-size: $m-size;
     border: none;
+    margin-right: $l-size;
   }
 </style>

@@ -1,22 +1,18 @@
 <template>
-  <div class="home">
+  <div class="main" id="home">
     <h1>Trending Movies</h1>
-    <div class="carousel">
-      <carousel :perPageCustom="[[1180, 6], [1060, 5],[820, 4], [650, 3], [420,2], [320,1]]" :paginationEnabled="false" :navigation-enabled="true">
-        <slide v-for="movie in trendingMovies" :key="movie.id">
-          <img :src="movie.poster"/>
-        </slide>
-      </carousel>
-    </div>
+    <MoviesCarousel :movies="trendingMovies"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import MoviesCarousel from './../components/MoviesCarousel';
 
 export default {
   name: 'home',
   components: {
+    MoviesCarousel
   },
   data(){
     return{
@@ -34,11 +30,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .carousel{
-     margin: $m-size $xl-size;
-   }
-  .VueCarousel-slide {
-    display: flex;
-    justify-content: center;
+  #home{
+    padding-left: $vs-size;
+    padding-right: $vs-size;
+    padding-bottom: $xl-size;
+  }
+
+  #home h1{
+    margin-top: $s-size;
   }
 </style>
