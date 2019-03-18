@@ -11,11 +11,11 @@
           <div class="extraDetail">
             <div class="releaseDate">
               <div class="detail-header">Release Date</div>
-              <div class="detail-content">25 Apr 2018</div>
+              <div class="detail-content">{{ release_date | formatDate }}</div>
             </div>
             <div class="duration">
               <div class="detail-header">Duration</div>
-              <div class="detail-content">2hr 29m</div>
+              <div class="detail-content">{{ runtime | formatRuntime }}</div>
             </div>
             <div class="genre">
               <div class="detail-header">Genre</div>
