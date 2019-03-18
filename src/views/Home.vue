@@ -1,6 +1,6 @@
 <template>
   <div class="main" id="home">
-    <h1>Trending Movies</h1>
+    <div class="title">Trending Movies</div>
     <MoviesCarousel :movies="trendingMovies"/>
   </div>
 </template>
@@ -34,9 +34,5 @@ export default {
     padding-left: $vs-size;
     padding-right: $vs-size;
     padding-bottom: $xl-size;
-  }
-
-  #home h1{
-    margin-top: $s-size;
   }
 </style>

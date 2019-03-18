@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <navbar/>
-    <router-view/>
+    <router-view :key="$route.fullPath"/>
   </div>
 </template>
 
@@ -24,6 +24,11 @@
 
   .main{
     padding-top: 64px;
+  }
+
+  .title{
+    padding-top: $s-size;
+    font-size: $vl-size;
   }
 
   @media only screen and (max-width: 468px){
