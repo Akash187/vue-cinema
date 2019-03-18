@@ -2,7 +2,7 @@
   <div id="cast">
     <div class="casts-title">Casts</div>
     <div class="casts">
-      <div class="cast-info" v-for="cast in casts" :key="cast.id">
+      <div class="cast-info" v-for="cast in maxCasts" :key="cast.id">
         <img class="cast-img" :src="cast.profile_url"/>
         <div class="cast-name">{{cast.name}}</div>
       </div>
@@ -25,7 +25,7 @@
             return {
               id: cast.id,
               name : cast.name,
-              profile_url : `http://image.tmdb.org/t/p/w92/${cast.profile_path}`
+              profile_url : `http://image.tmdb.org/t/p/w154/${cast.profile_path}`
             }
           });
         })
@@ -36,6 +36,15 @@
     data(){
       return{
         casts: []
+      }
+    },
+    computed : {
+      maxCasts : function () {
+        if(this.casts.length < 15){
+          return this.casts;
+        }else{
+          return this.casts.slice(0,15);
+        }
       }
     }
   }
@@ -61,7 +70,7 @@
     width: 100%;
     display: grid;
     grid-gap: $s-size;
-    grid-template-columns: repeat(auto-fill, 92px);
+    grid-template-columns: repeat(auto-fill, 154px);
     margin-top: $s-size;
     justify-content: center;
   }
@@ -72,7 +81,7 @@
   }
 
   .cast-info img{
-    height: 138px;
+    height: 231px;
   }
 
   .cast-info .cast-name{
