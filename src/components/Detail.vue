@@ -24,7 +24,7 @@
               </div>
             </div>
             <div class="trailer">
-              <div class="detail-content"><i class="fas fa-play"></i> Play Trailer</div>
+              <div v-if="trailerSite === 'YouTube'" @click="show" class="detail-content"><i class="fas fa-play"></i> Play Trailer</div>
             </div>
           </div>
           <div class="overview">
@@ -34,12 +34,18 @@
         </div>
       </div>
     </div>
+    <modal name="trailer" :adaptive="true" height="auto" width="640px">
+      <div style="display: flex">
+          <youtube :video-id="trailerId" ref="youtube" @playing="playing"/>
+      </div>
+    </modal>
   </div>
 </template>
 
 <script>
+
   export default {
-    name: "movie",
+    name: "detail",
     data(){
       return{
         error: false,
@@ -50,7 +56,8 @@
         overview: '',
         poster: '',
         backdrop: '',
-        trailer: ''
+        trailerId: '',
+        trailerSite: ''
       }
     },
     created(){
@@ -69,12 +76,21 @@
             ref.overview = data.overview;
             ref.poster = `http://image.tmdb.org/t/p/w342/${data.poster_path}`;
             ref.backdrop = `http://image.tmdb.org/t/p/w780/${data.backdrop_path}`;
-            ref.trailer = data.videos.results[0].id;
+            ref.trailerId = data.videos.results[0].key;
+            ref.trailerSite = data.videos.results[0].site;
           }
         })
         .catch((err) => {
           console.log(`Error Fetching Movie`);
         })
+    },
+    methods: {
+      show () {
+        this.$modal.show('trailer');
+      },
+      hide () {
+        this.$modal.hide('trailer');
+      }
     }
   }
 </script>

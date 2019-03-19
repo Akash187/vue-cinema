@@ -35,7 +35,7 @@
     display: flex;
     position: fixed;
     width: 100%;
-    z-index: 9999;
+    z-index: 2;
     background: $dark-blue;
     justify-content: space-between;
     flex-wrap: wrap;
