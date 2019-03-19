@@ -1,6 +1,5 @@
 <template>
-  <div v-if="error" class="error"><h1>Sorry, No Data available for this movie!</h1></div>
-  <div v-else v-bind:style="{ 'background-image': 'url(' + backdrop + ')', 'background-size': 'cover' }">
+  <div v-bind:style="{ 'background-image': 'url(' + backdrop + ')', 'background-size': 'cover' }">
     <div class="movie">
       <div id="movieDetail">
         <img :src="poster"/>
@@ -36,7 +35,7 @@
     </div>
     <modal name="trailer" :adaptive="true" height="auto" width="640px">
       <div style="display: flex">
-          <youtube :video-id="trailerId" ref="youtube" @playing="playing"/>
+          <youtube :video-id="trailerId" :player-vars="playerVars" ref="youtube" @playing="playing"/>
       </div>
     </modal>
   </div>
@@ -48,7 +47,6 @@
     name: "detail",
     data(){
       return{
-        error: false,
         title: '',
         genres: [],
         release_date: '',
@@ -57,30 +55,31 @@
         poster: '',
         backdrop: '',
         trailerId: '',
-        trailerSite: ''
+        trailerSite: '',
+        playerVars: {
+          autoplay: 1
+        }
       }
     },
     created(){
       let ref = this;
       let movieId = this.$route.params.id;
-      fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.VUE_APP_API_KEY}&append_to_response=videos,images`)
+      fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.VUE_APP_API_KEY}h&append_to_response=videos,images`)
         .then((resp) => resp.json())
         .then(function(data) {
-          if(!data.title){
-            ref.error = true;
-          }else{
-            ref.title = data.original_title;
-            ref.genres = data.genres.map((genre) => genre.name);
-            ref.runtime = data.runtime;
-            ref.release_date = data.release_date;
-            ref.overview = data.overview;
-            ref.poster = `http://image.tmdb.org/t/p/w342/${data.poster_path}`;
-            ref.backdrop = `http://image.tmdb.org/t/p/w780/${data.backdrop_path}`;
-            ref.trailerId = data.videos.results[0].key;
-            ref.trailerSite = data.videos.results[0].site;
-          }
+          ref.title = data.original_title;
+          ref.genres = data.genres.map((genre) => genre.name);
+          ref.runtime = data.runtime;
+          ref.release_date = data.release_date;
+          ref.overview = data.overview;
+          ref.poster = `http://image.tmdb.org/t/p/w342/${data.poster_path}`;
+          ref.backdrop = `http://image.tmdb.org/t/p/w780/${data.backdrop_path}`;
+          ref.trailerId = data.videos.results[0].key;
+          ref.trailerSite = data.videos.results[0].site;
+          ref.$store.dispatch('updateDataLoaded', true);
         })
         .catch((err) => {
+          ref.$store.dispatch('updateError', true);
           console.log(`Error Fetching Movie`);
         })
     },
@@ -96,12 +95,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-  .error{
-    text-align: center;
-    margin-top: $s-size;
-    color: red;
-  }
 
   .movie{
     height: calc(100vh - 64px);
@@ -158,6 +151,10 @@
     padding-right: $s-size;
   }
 
+  .trailer{
+    cursor: pointer;
+  }
+
   .detail .overview{
     padding: $vl-size 0;
   }
@@ -181,7 +178,7 @@
   }
 
   .detail .overview p{
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: $l-height;
     font-weight: 200;
     font-size: $m-size;
@@ -246,7 +243,7 @@
     }
 
     .detail .overview p{
-      overflow-y: scroll;
+      overflow-y: auto;
       max-height: $m-height;
       font-size: $s-size;
     }
@@ -271,7 +268,7 @@
     }
 
     .detail .overview p{
-      overflow-y: scroll;
+      overflow-y: auto;
       max-height: $s-height;
       font-size: $s-size;
     }

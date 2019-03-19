@@ -4,7 +4,7 @@
       <router-link to="/">
         <img id="project-logo" alt="Project logo" src="../assets/logo.png">
       </router-link>
-      <span id="project-title">Vue Cinema</span>
+      <span id="project-title">Vue Movies</span>
     </div>
     <div class="navbar-child">
       <input type="text" v-model="searchTerm" placeholder="Search.." name="search">

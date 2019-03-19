@@ -31,6 +31,12 @@
     font-size: $vl-size;
   }
 
+  .error{
+    text-align: center;
+    margin-top: $s-size;
+    color: red;
+  }
+
   @media only screen and (max-width: 468px){
     .main{
       padding-top: 102px;

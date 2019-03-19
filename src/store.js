@@ -8,9 +8,17 @@ export default new Vuex.Store({
     searchTerm: 'Hello',
     trendingMovies: [],
     topRatedMovies: [],
-    genres: []
+    genres: [],
+    dataLoaded: false,
+    error: false
   },
   mutations: {
+    updateDataLoaded: (state, data) => {
+      state.dataLoaded = data;
+    },
+    updateError: (state, data) => {
+      state.error = data;
+    },
     updateSearchTerm: (state, term) => {
       state.searchTerm = term;
     },
@@ -19,10 +27,15 @@ export default new Vuex.Store({
         return genre.name;
       });
     },
-    fetchTopRatedMovies: (state, data) => {
-      state.topRatedMovies = data;
-    },
     fetchTrendingMovies: (state, data) => {
+      state.trendingMovies = data.results.map((movie) =>
+        ({
+          id: movie.id,
+          poster: `http://image.tmdb.org/t/p/w185/${movie.poster_path}`
+        })
+      );
+    },
+    fetchTopRatedMovies: (state, data) => {
       state.trendingMovies = data.results.map((movie) =>
         ({
           id: movie.id,
@@ -32,6 +45,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    updateDataLoaded: (context, data) => {
+      context.commit('updateDataLoaded', data);
+    },
+    updateError: (context, data) => {
+      context.commit('updateError', data);
+    },
     updateSearchTerm: (context, term) => {
       context.commit('updateSearchTerm', term);
     },
@@ -52,7 +71,7 @@ export default new Vuex.Store({
       context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchTrendingMovies'});
     },
     fetchTopRatedMovies : (context) => {
-      context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchTopRatedMovies'});
+      context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchTopRatedMovies'});
     },
   }
 })
