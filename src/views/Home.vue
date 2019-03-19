@@ -2,6 +2,12 @@
   <div class="main" id="home">
     <div class="title">Trending Movies</div>
     <MoviesCarousel :movies="trendingMovies"/>
+    <div class="title">Top Rated Movies</div>
+    <MoviesCarousel :movies="topRatedMovies"/>
+    <div class="title">Latest Movies</div>
+    <MoviesCarousel :movies="nowPlayingMovies"/>
+    <div class="title">Upcoming Movies</div>
+    <MoviesCarousel :movies="upcomingMovies"/>
   </div>
 </template>
 
@@ -18,12 +24,18 @@ export default {
     return{
     }
   },
-  created(){
-    this.$store.dispatch('fetchTrendingMovies');
-  },
   computed: {
     trendingMovies(){
       return this.$store.state.trendingMovies;
+    },
+    topRatedMovies(){
+      return this.$store.state.topRatedMovies;
+    },
+    nowPlayingMovies(){
+      return this.$store.state.nowPlayingMovies;
+    },
+    upcomingMovies(){
+      return this.$store.state.upcomingMovies;
     }
   }
 }

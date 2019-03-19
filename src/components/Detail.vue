@@ -64,7 +64,7 @@
     created(){
       let ref = this;
       let movieId = this.$route.params.id;
-      fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.VUE_APP_API_KEY}h&append_to_response=videos,images`)
+      fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.VUE_APP_API_KEY}&append_to_response=videos`)
         .then((resp) => resp.json())
         .then(function(data) {
           ref.title = data.original_title;

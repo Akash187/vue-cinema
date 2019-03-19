@@ -12,6 +12,12 @@
     name: 'app',
     components: {
       Navbar
+    },
+    created(){
+      this.$store.dispatch('fetchTrendingMovies');
+      this.$store.dispatch('fetchTopRatedMovies');
+      this.$store.dispatch('fetchNowPlayingMovies');
+      this.$store.dispatch('fetchUpcomingMovies');
     }
   }
 </script>

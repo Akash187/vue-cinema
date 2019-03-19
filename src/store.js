@@ -8,6 +8,8 @@ export default new Vuex.Store({
     searchTerm: 'Hello',
     trendingMovies: [],
     topRatedMovies: [],
+    nowPlayingMovies: [],
+    upcomingMovies: [],
     genres: [],
     dataLoaded: false,
     error: false
@@ -36,7 +38,23 @@ export default new Vuex.Store({
       );
     },
     fetchTopRatedMovies: (state, data) => {
-      state.trendingMovies = data.results.map((movie) =>
+      state.topRatedMovies = data.results.map((movie) =>
+        ({
+          id: movie.id,
+          poster: `http://image.tmdb.org/t/p/w185/${movie.poster_path}`
+        })
+      );
+    },
+    fetchNowPlayingMovies: (state, data) => {
+      state.nowPlayingMovies = data.results.map((movie) =>
+        ({
+          id: movie.id,
+          poster: `http://image.tmdb.org/t/p/w185/${movie.poster_path}`
+        })
+      );
+    },
+    fetchUpcomingMovies: (state, data) => {
+      state.upcomingMovies = data.results.map((movie) =>
         ({
           id: movie.id,
           poster: `http://image.tmdb.org/t/p/w185/${movie.poster_path}`
@@ -58,6 +76,9 @@ export default new Vuex.Store({
       fetch(url)
         .then((resp) => resp.json())
         .then(function(data) {
+          if(mutation === 'fetchLatestMovies'){
+            console.log(data);
+          }
           context.commit(mutation, data);
         })
         .catch((err) => {
@@ -72,6 +93,12 @@ export default new Vuex.Store({
     },
     fetchTopRatedMovies : (context) => {
       context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchTopRatedMovies'});
+    },
+    fetchNowPlayingMovies : (context) => {
+      context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchNowPlayingMovies'});
+    },
+    fetchUpcomingMovies : (context) => {
+      context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchUpcomingMovies'});
     },
   }
 })
