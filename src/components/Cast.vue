@@ -53,8 +53,6 @@
 <style lang="scss" scoped>
   #cast{
     padding: $s-height 0;
-    background-color: $off-black;
-    color: $off-white;
     width: 100%;
     display: flex;
     flex-direction: column;

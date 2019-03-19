@@ -28,6 +28,11 @@
     margin: 0;
   }
 
+  body{
+    background-color: $off-black;
+    color: $off-white;
+  }
+
   .main{
     padding-top: 64px;
   }
@@ -42,6 +47,14 @@
     margin-top: $s-size;
     color: red;
   }
+
+  .VueCarousel-navigation-button{
+    padding: 4px 6px !important;
+    background-color: white !important;
+    border-radius: 50%;
+  }
+
+  .VueCarousel-navigation-button:focus { outline: 0 !important;}
 
   @media only screen and (max-width: 468px){
     .main{

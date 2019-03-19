@@ -41,7 +41,6 @@
 <style lang="scss" scoped>
 
   #similarMovies{
-    background-color: $off-black;
     padding: 0 $s-size $s-size $s-size;
   }
 
