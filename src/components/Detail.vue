@@ -8,7 +8,6 @@
             <div class="title">
               {{title}}
             </div>
-            <div class="movie-action"><i class="fab fa-gratipay"></i></div>
           </div>
           <div class="extraDetail">
             <div class="releaseDate">
@@ -133,12 +132,6 @@
     align-items: center;
   }
 
-  .detail .title-container .movie-action{
-    color: #e60903;
-    font-size: $xl-size;
-    cursor: pointer;
-  }
-
   .detail .title{
     font-size: $vl-size;
   }
@@ -229,10 +222,6 @@
     }
 
     .detail .title{
-      font-size: $l-size;
-    }
-
-    .detail .title-container .movie-action{
       font-size: $l-size;
     }
 

@@ -11,7 +11,6 @@ export default new Vuex.Store({
     totalPage: 0,
     dataLoaded: false,
     error: false,
-    showAlert: false,
     alertMsg: '',
     trendingMoviesUrl: `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.VUE_APP_API_KEY}`,
     topRatedMoviesUrl: `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.VUE_APP_API_KEY}`,
@@ -42,9 +41,6 @@ export default new Vuex.Store({
     error(state) {
       return state.error;
     },
-    showAlert(state){
-      return state.showAlert;
-    },
     alertMsg(state){
       return state.alertMsg;
     },
@@ -67,9 +63,6 @@ export default new Vuex.Store({
     },
     updateError: (state, data) => {
       state.error = data;
-    },
-    updateShowAlert: (state, data) => {
-      state.showAlert = data;
     },
     updateAlertMsg: (state, data) => {
       state.alertMsg = data;

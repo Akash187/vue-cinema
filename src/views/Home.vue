@@ -29,16 +29,16 @@ export default {
   },
   computed: {
     trendingMovies(){
-      return this.$store.state.trendingMovies;
+      return this.$store.getters.trendingMovies;
     },
     topRatedMovies(){
-      return this.$store.state.topRatedMovies;
+      return this.$store.getters.topRatedMovies;
     },
     nowPlayingMovies(){
-      return this.$store.state.nowPlayingMovies;
+      return this.$store.getters.nowPlayingMovies;
     },
     upcomingMovies(){
-      return this.$store.state.upcomingMovies;
+      return this.$store.getters.upcomingMovies;
     }
   }
 }
