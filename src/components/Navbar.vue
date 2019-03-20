@@ -1,9 +1,14 @@
 <template>
   <div id="navbar">
     <div class="navbar-child">
+      <div class="hero-logo">
+        <div v-if="this.$route.path !== '/'" @click="goBack" id="backBtn">
+          <i class="fas fa-arrow-left"></i>
+        </div>
       <router-link to="/">
-        <img id="project-logo" alt="Project logo" src="../assets/logo.png">
+          <img id="project-logo" alt="Project logo" src="../assets/logo.png">
       </router-link>
+      </div>
       <span id="project-title">Vue Movies</span>
     </div>
     <div class="navbar-child">
@@ -32,6 +37,10 @@
             this.$router.push(`/search/${this.searchTerm}`)
           }
         }
+      },
+      goBack: function () {
+        console.log(this);
+        this.$router.go(-1);
       }
     }
   }
@@ -55,6 +64,17 @@
     display: flex;
     align-items: center;
     padding: $es-size;
+  }
+
+  .hero-logo{
+    display: flex;
+    align-items: center;
+  }
+
+  #backBtn{
+    padding-right: $s-size;
+    color: white;
+    font-size: 28px;
   }
 
   #project-title{
