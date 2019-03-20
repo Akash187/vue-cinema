@@ -14,10 +14,10 @@
       Navbar
     },
     created(){
-      this.$store.dispatch('fetchTrendingMovies');
-      this.$store.dispatch('fetchTopRatedMovies');
-      this.$store.dispatch('fetchNowPlayingMovies');
-      this.$store.dispatch('fetchUpcomingMovies');
+      this.$store.dispatch('fetchMovies',{url: this.$store.state.trendingMoviesUrl, mutation: 'fetchTrendingMovies'});
+      this.$store.dispatch('fetchMovies',{url: this.$store.state.topRatedMoviesUrl, mutation:'fetchTopRatedMovies'});
+      this.$store.dispatch('fetchMovies',{url: this.$store.state.nowPlayingMoviesUrl, mutation:'fetchNowPlayingMovies'});
+      this.$store.dispatch('fetchMovies',{url: this.$store.state.upcomingMoviesUrl, mutation:'fetchUpcomingMovies'});
     }
   }
 </script>

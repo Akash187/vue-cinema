@@ -20,6 +20,9 @@ export default {
   components: {
     MoviesCarousel
   },
+  created(){
+    window.scrollTo(0,0);
+  },
   data(){
     return{
     }
@@ -43,8 +46,16 @@ export default {
 
 <style lang="scss" scoped>
   #home{
-    padding-left: $vs-size;
-    padding-right: $vs-size;
+    padding-left: $m-size;
+    padding-right: $m-size;
     padding-bottom: $xl-size;
+  }
+
+  @media only screen and (max-width: 680px) {
+    #home{
+      padding-left: $vs-size;
+      padding-right: $vs-size;
+      padding-bottom: $xl-size;
+    }
   }
 </style>

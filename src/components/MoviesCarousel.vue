@@ -1,6 +1,6 @@
 <template>
   <div class="carousel">
-    <carousel :perPageCustom="[[1180, 6], [1060, 5],[880, 4], [680, 3], [480,2], [320,1]]" :paginationEnabled="false" :navigation-enabled="true">
+    <carousel :perPageCustom="[[1240, 6], [1060, 5],[880, 4], [680, 3], [480,2], [320,1]]" :paginationEnabled="false" :navigation-enabled="true">
       <slide v-for="movie in movies" :key="movie.id">
         <router-link :to="`/movie/${movie.id}`">
           <img :src="movie.poster"/>

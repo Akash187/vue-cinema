@@ -4,8 +4,11 @@
       <div id="movieDetail">
         <img :src="poster"/>
         <div class="detail">
-          <div class="title">
-            {{title}}
+          <div class="title-container">
+            <div class="title">
+              {{title}}
+            </div>
+            <div class="movie-action"><i class="fab fa-gratipay"></i></div>
           </div>
           <div class="extraDetail">
             <div class="releaseDate">
@@ -23,7 +26,7 @@
               </div>
             </div>
             <div class="trailer">
-              <div v-if="trailerSite === 'YouTube'" @click="show" class="detail-content"><i class="fas fa-play"></i> Play Trailer</div>
+              <div v-if="trailerId" @click="show" class="detail-content"><i class="fas fa-play"></i> Play Trailer</div>
             </div>
           </div>
           <div class="overview">
@@ -55,7 +58,6 @@
         poster: '',
         backdrop: '',
         trailerId: '',
-        trailerSite: '',
         playerVars: {
           autoplay: 1
         }
@@ -74,8 +76,11 @@
           ref.overview = data.overview;
           ref.poster = `http://image.tmdb.org/t/p/w342/${data.poster_path}`;
           ref.backdrop = `http://image.tmdb.org/t/p/w780/${data.backdrop_path}`;
-          ref.trailerId = data.videos.results[0].key;
-          ref.trailerSite = data.videos.results[0].site;
+          for(let video of data.videos.results){
+            if(video.type === 'Trailer'){
+              ref.trailerId = video.key;
+            }
+          }
           ref.$store.dispatch('updateDataLoaded', true);
         })
         .catch((err) => {
@@ -120,6 +125,18 @@
     background: rgba(0, 0, 0, 0.6);
     padding: $vs-size $xl-size;
     color: #ffcb6b;
+  }
+
+  .detail .title-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .detail .title-container .movie-action{
+    color: #e60903;
+    font-size: $xl-size;
+    cursor: pointer;
   }
 
   .detail .title{
@@ -212,6 +229,10 @@
     }
 
     .detail .title{
+      font-size: $l-size;
+    }
+
+    .detail .title-container .movie-action{
       font-size: $l-size;
     }
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="similarMovies">
+  <div v-if="similarMovies.length > 0" id="similarMovies">
     <div class="title">Similar Movies</div>
     <MoviesCarousel :movies="similarMovies"/>
   </div>
@@ -7,6 +7,7 @@
 
 <script>
   import MoviesCarousel from './MoviesCarousel';
+  import filterMovies from './../mixins/filterMovies';
 
   export default {
     name: "similar-movies",
@@ -21,19 +22,11 @@
     created(){
       let ref = this;
       let movieId = this.$route.params.id;
-      fetch(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${process.env.VUE_APP_API_KEY}`)
-        .then((resp) => resp.json())
-        .then(function(data) {
-          ref.similarMovies = data.results.filter((movie) => {
-            return movie.poster_path
-          }).map((movie) => ({
-            id: movie.id,
-            poster: `http://image.tmdb.org/t/p/w185/${movie.poster_path}`
-          }));
-        })
-        .catch((err) => {
-          console.log(`Error Fetching Movie`);
-        })
+      filterMovies(`https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${process.env.VUE_APP_API_KEY}`).then(({movies}) => {
+        ref.similarMovies = movies;
+      }).catch((error) => {
+        console.log(error);
+      });
     }
   }
 </script>

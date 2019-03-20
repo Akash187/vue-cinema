@@ -24,7 +24,14 @@
     },
     methods: {
       search: function () {
-        this.$store.dispatch('updateSearchTerm', this.searchTerm);
+        if(this.searchTerm.length > 0){
+          if(this.$store.getters.searchTerm === this.searchTerm){
+            this.$router.push(`/search/${this.searchTerm}`)
+          }else {
+            this.$store.dispatch('updateSearchTerm', this.searchTerm);
+            this.$router.push(`/search/${this.searchTerm}`)
+          }
+        }
       }
     }
   }

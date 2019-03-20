@@ -1,5 +1,5 @@
 <template>
-  <div id="cast">
+  <div v-if="casts.length > 0" id="cast">
     <div class="casts-title">Casts</div>
     <div class="casts">
       <div class="cast-info" v-for="cast in maxCasts" :key="cast.id">

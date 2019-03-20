@@ -1,18 +1,65 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import filterMovies from './mixins/filterMovies';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    searchTerm: 'Hello',
+    searchTerm: '',
+    currentPage: 0,
+    totalPage: 0,
+    dataLoaded: false,
+    error: false,
+    showAlert: false,
+    alertMsg: '',
+    trendingMoviesUrl: `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.VUE_APP_API_KEY}`,
+    topRatedMoviesUrl: `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.VUE_APP_API_KEY}`,
+    nowPlayingMoviesUrl: `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.VUE_APP_API_KEY}`,
+    upcomingMoviesUrl: `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.VUE_APP_API_KEY}`,
+    searchedMovies: [],
     trendingMovies: [],
     topRatedMovies: [],
     nowPlayingMovies: [],
     upcomingMovies: [],
-    genres: [],
-    dataLoaded: false,
-    error: false
+  },
+  getters: {
+    searchTerm(state){
+      return state.searchTerm;
+    },
+    currentPage(state){
+      return state.currentPage;
+    },
+    totalPage(state){
+      return state.totalPage;
+    },
+    searchedMovies(state){
+      return state.searchedMovies;
+    },
+    dataLoaded(state){
+      return state.dataLoaded;
+    },
+    error(state) {
+      return state.error;
+    },
+    showAlert(state){
+      return state.showAlert;
+    },
+    alertMsg(state){
+      return state.alertMsg;
+    },
+    trendingMovies(state){
+      return state.trendingMovies;
+    },
+    topRatedMovies(state){
+      return state.topRatedMovies;
+    },
+    nowPlayingMovies(state){
+      return state.nowPlayingMovies;
+    },
+    upcomingMovies(state){
+      return state.upcomingMovies;
+    }
   },
   mutations: {
     updateDataLoaded: (state, data) => {
@@ -21,46 +68,35 @@ export default new Vuex.Store({
     updateError: (state, data) => {
       state.error = data;
     },
+    updateShowAlert: (state, data) => {
+      state.showAlert = data;
+    },
+    updateAlertMsg: (state, data) => {
+      state.alertMsg = data;
+    },
     updateSearchTerm: (state, term) => {
       state.searchTerm = term;
-    },
-    fetchGenres : (state, data)=> {
-      state.genres = data.genres.map((genre) => {
-        return genre.name;
-      });
+      state.currentPage = 0;
+      state.totalPage = 0;
+      state.searchedMovies = [];
     },
     fetchTrendingMovies: (state, data) => {
-      state.trendingMovies = data.results.map((movie) =>
-        ({
-          id: movie.id,
-          poster: `http://image.tmdb.org/t/p/w185/${movie.poster_path}`
-        })
-      );
+      state.trendingMovies = data;
     },
     fetchTopRatedMovies: (state, data) => {
-      state.topRatedMovies = data.results.map((movie) =>
-        ({
-          id: movie.id,
-          poster: `http://image.tmdb.org/t/p/w185/${movie.poster_path}`
-        })
-      );
+      state.topRatedMovies = data;
     },
     fetchNowPlayingMovies: (state, data) => {
-      state.nowPlayingMovies = data.results.map((movie) =>
-        ({
-          id: movie.id,
-          poster: `http://image.tmdb.org/t/p/w185/${movie.poster_path}`
-        })
-      );
+      state.nowPlayingMovies = data;
     },
     fetchUpcomingMovies: (state, data) => {
-      state.upcomingMovies = data.results.map((movie) =>
-        ({
-          id: movie.id,
-          poster: `http://image.tmdb.org/t/p/w185/${movie.poster_path}`
-        })
-      );
-    }
+      state.upcomingMovies = data;
+    },
+    fetchSearchedMovies: (state, {current_page, total_pages, movies}) => {
+      state.searchedMovies = state.searchedMovies.concat(movies);
+      state.currentPage = current_page;
+      state.totalPage = total_pages;
+    },
   },
   actions: {
     updateDataLoaded: (context, data) => {
@@ -72,33 +108,29 @@ export default new Vuex.Store({
     updateSearchTerm: (context, term) => {
       context.commit('updateSearchTerm', term);
     },
-    fetchData: (context, {url, mutation}) => {
-      fetch(url)
-        .then((resp) => resp.json())
-        .then(function(data) {
-          if(mutation === 'fetchLatestMovies'){
-            console.log(data);
-          }
-          context.commit(mutation, data);
-        })
-        .catch((err) => {
-          console.log(`Error Fetching ${mutation} ${err}`);
-        })
+    fetchMovies: (context, {url, mutation}) => {
+      filterMovies(url).then(({movies}) => {
+        context.commit(mutation, movies);
+      }).catch(() => {
+        context.commit('updateAlertMsg', 'Problem Fetching Movies');
+      });
     },
-    fetchGenres : (context) => {
-      context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchGenres'});
-    },
-    fetchTrendingMovies : (context) => {
-      context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchTrendingMovies'});
-    },
-    fetchTopRatedMovies : (context) => {
-      context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchTopRatedMovies'});
-    },
-    fetchNowPlayingMovies : (context) => {
-      context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchNowPlayingMovies'});
-    },
-    fetchUpcomingMovies : (context) => {
-      context.dispatch('fetchData', {url: `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.VUE_APP_API_KEY}`, mutation: 'fetchUpcomingMovies'});
-    },
+    fetchSearchedMovies : (context, payload) => {
+      return new Promise((resolve, reject) => {
+        let url = '';
+        if(!payload){
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.VUE_APP_API_KEY}&query=${context.state.searchTerm}`;
+        }else{
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.VUE_APP_API_KEY}&query=${context.state.searchTerm}&page=${context.state.currentPage + 1}`;
+        }
+        filterMovies(url).then((result) => {
+          context.commit('fetchSearchedMovies', result);
+          resolve(context.getters.searchedMovies);
+        }).catch(() => {
+          context.commit('updateAlertMsg', 'Problem Fetching Movies');
+          reject('Problem Fetching Movies');
+        });
+      })
+    }
   }
-})
+});
