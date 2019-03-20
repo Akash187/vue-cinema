@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <navbar/>
-    <div v-if="this.$store.getters.alertMsg.length > 0">
-      <h1 style="padding-top: 92px; text-align: center; color: red">{{this.$store.getters.alertMsg}}</h1>
+    <div v-if="this.$store.getters.alertMsg.length === 0">
+      <router-view :key="$route.fullPath"/>
     </div>
     <div v-else>
-      <router-view :key="$route.fullPath"/>
+      <h1 style="padding-top: 92px; text-align: center; color: red">{{this.$store.getters.alertMsg}}</h1>
     </div>
   </div>
 </template>
