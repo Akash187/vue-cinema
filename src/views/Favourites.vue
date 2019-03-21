@@ -1,7 +1,7 @@
 <template>
   <div class="main search-favourite-page">
     <div class="title">Favourites Movies</div>
-    <div v-show="favouriteMovies.length === 0"></div>
+    <div v-show="favouriteMovies.length === 0">No Favourite Movies so far.</div>
     <div id="movies">
       <div v-for="movie in favouriteMovies" :key="movie.id">
         <div class="delete-icon"><i @click="deleteFavourite(movie.id)" class="fas fa-trash"></i></div>
