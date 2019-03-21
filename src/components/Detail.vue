@@ -8,6 +8,10 @@
             <div class="title">
               {{title}}
             </div>
+            <div class="fav-icon">
+              <i v-if="favourite" @click="deleteFavourite" class="fas fa-trash" style="color: red"></i>
+              <i v-else @click="addToFavourites" class="fab fa-gratipay"></i>
+            </div>
           </div>
           <div class="extraDetail">
             <div class="releaseDate">
@@ -49,6 +53,7 @@
     name: "detail",
     data(){
       return{
+        id: '',
         title: '',
         genres: [],
         release_date: '',
@@ -59,7 +64,8 @@
         trailerId: '',
         playerVars: {
           autoplay: 1
-        }
+        },
+        favourite: false
       }
     },
     created(){
@@ -68,6 +74,7 @@
       fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.VUE_APP_API_KEY}&append_to_response=videos`)
         .then((resp) => resp.json())
         .then(function(data) {
+          ref.id = data.id;
           ref.title = data.original_title;
           ref.genres = data.genres.map((genre) => genre.name);
           ref.runtime = data.runtime;
@@ -85,7 +92,14 @@
         .catch((err) => {
           ref.$store.dispatch('updateError', true);
           console.log(`Error Fetching Movie`);
-        })
+        });
+
+      for(let favourite of this.$store.getters.favouriteMovies){
+        if(favourite.id === parseInt(movieId)){
+          this.favourite = true;
+          break;
+        }
+      }
     },
     methods: {
       show () {
@@ -93,6 +107,17 @@
       },
       hide () {
         this.$modal.hide('trailer');
+      },
+      addToFavourites(){
+        this.$store.dispatch('addToFavourites', {id: this.id, title: this.title, poster: this.poster})
+          .then(() => {
+          this.favourite = true;
+        }).catch(err => console.log(err));
+      },
+      deleteFavourite(){
+        this.$store.dispatch('deleteFavourite', this.id).then(() => {
+          this.favourite = false;
+        }).catch(err => console.log(err));
       }
     }
   }
@@ -130,6 +155,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .detail .title-container .fav-icon{
+    font-size: $xl-size;
+    color: lawngreen;
+    cursor: pointer;
   }
 
   .detail .title{
@@ -227,6 +258,10 @@
 
     #movieDetail{
       height: 500px;
+    }
+
+    .detail .title-container .fav-icon{
+      font-size: $l-size;
     }
   }
 

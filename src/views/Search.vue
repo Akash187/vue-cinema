@@ -1,5 +1,5 @@
 <template>
-  <div class="main" id="searchPage">
+  <div class="main search-favourite-page">
     <div class="title">Search Result</div>
     <Movies :movies="searchedMovies"/>
   </div>
@@ -53,17 +53,4 @@
 </script>
 
 <style lang="scss" scoped>
-  #searchPage{
-    padding-left: $m-size;
-    padding-right: $m-size;
-    padding-bottom: $xl-size;
-  }
-
-  @media only screen and (max-width: 680px) {
-    #searchPage{
-      padding-left: $vs-size;
-      padding-right: $vs-size;
-      padding-bottom: $xl-size;
-    }
-  }
 </style>

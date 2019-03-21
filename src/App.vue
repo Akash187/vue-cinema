@@ -19,6 +19,7 @@
       Navbar
     },
     created(){
+      this.$store.dispatch('initFavourites');
       this.$store.dispatch('fetchMovies',{url: this.$store.state.trendingMoviesUrl, mutation: 'fetchTrendingMovies'});
       this.$store.dispatch('fetchMovies',{url: this.$store.state.topRatedMoviesUrl, mutation:'fetchTopRatedMovies'});
       this.$store.dispatch('fetchMovies',{url: this.$store.state.nowPlayingMoviesUrl, mutation:'fetchNowPlayingMovies'});
@@ -51,6 +52,20 @@
     text-align: center;
     margin-top: $s-size;
     color: red;
+  }
+
+  .search-favourite-page{
+    padding-left: $m-size;
+    padding-right: $m-size;
+    padding-bottom: $xl-size;
+  }
+
+  @media only screen and (max-width: 680px) {
+    .search-favourite-page{
+      padding-left: $vs-size;
+      padding-right: $vs-size;
+      padding-bottom: $xl-size;
+    }
   }
 
   .VueCarousel-navigation-button{

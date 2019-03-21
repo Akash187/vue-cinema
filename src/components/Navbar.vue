@@ -2,7 +2,7 @@
   <div id="navbar">
     <div class="navbar-child">
       <div class="hero-logo">
-        <div v-if="this.$route.path !== '/'" @click="goBack" id="backBtn">
+        <div v-if="this.$route.name !== 'home'" @click="goBack" id="backBtn">
           <i class="fas fa-arrow-left"></i>
         </div>
       <router-link to="/">
@@ -14,6 +14,9 @@
     <div class="navbar-child">
       <input type="text" v-model="searchTerm" placeholder="Search.." name="search">
       <button id="submitBtn" @click="search"><i class="fas fa-search"></i></button>
+      <router-link to="/favourites">
+        <div id="favouritesBtn" @click="search"><i class="fas fa-heart"></i></div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -39,7 +42,6 @@
         }
       },
       goBack: function () {
-        console.log(this);
         this.$router.go(-1);
       }
     }
@@ -98,6 +100,12 @@
     padding: 6px;
     font-size: $m-size;
     border: none;
-    margin-right: $l-size;
+    margin-right: $s-size;
+  }
+
+  #favouritesBtn{
+    font-size: 28px;
+    padding-right: $xl-size;
+    color: red;
   }
 </style>

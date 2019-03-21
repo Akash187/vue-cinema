@@ -16,6 +16,7 @@ export default new Vuex.Store({
     topRatedMoviesUrl: `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.VUE_APP_API_KEY}`,
     nowPlayingMoviesUrl: `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.VUE_APP_API_KEY}`,
     upcomingMoviesUrl: `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.VUE_APP_API_KEY}`,
+    favouriteMovies: [],
     searchedMovies: [],
     trendingMovies: [],
     topRatedMovies: [],
@@ -43,6 +44,9 @@ export default new Vuex.Store({
     },
     alertMsg(state){
       return state.alertMsg;
+    },
+    favouriteMovies(state){
+      return state.favouriteMovies;
     },
     trendingMovies(state){
       return state.trendingMovies;
@@ -90,6 +94,12 @@ export default new Vuex.Store({
       state.currentPage = current_page;
       state.totalPage = total_pages;
     },
+    initFavourites: (state, data) => {
+      state.favouriteMovies = data;
+    },
+    updateFavourites: (state, data) => {
+      state.favouriteMovies = data;
+    },
   },
   actions: {
     updateDataLoaded: (context, data) => {
@@ -124,6 +134,47 @@ export default new Vuex.Store({
           reject('Problem Fetching Movies');
         });
       })
+    },
+    initFavourites: (context) => {
+      let favourites = JSON.parse(localStorage.getItem('favourites'));
+      let updatedFavourites = [];
+      if (favourites) {
+        updatedFavourites = favourites;
+      }
+      context.commit('initFavourites', updatedFavourites);
+    },
+    addToFavourites: (context, data) => {
+      return new Promise((resolve, reject) => {
+        try {
+          let favourites = JSON.parse(localStorage.getItem('favourites'));
+          let updatedFavourites = [];
+          if (favourites) {
+            favourites.push(data);
+            updatedFavourites = favourites;
+          }else{
+            updatedFavourites.push(data);
+          }
+          localStorage.setItem('favourites', JSON.stringify(updatedFavourites));
+          context.commit('updateFavourites', updatedFavourites);
+          resolve(context.getters.favouriteMovies);
+        }catch (err){
+          reject(err);
+        }
+      })
+    },
+    deleteFavourite: (context, id) => {
+      return new Promise((resolve, reject) => {
+        try {
+          let favourites = JSON.parse(localStorage.getItem('favourites'));
+          let updatedFavourites = favourites.filter(favourite => favourite.id !== id);
+          localStorage.setItem('favourites', JSON.stringify(updatedFavourites));
+          context.commit('updateFavourites', updatedFavourites);
+          resolve(context.getters.favouriteMovies);
+        }catch (err){
+          reject(err);
+        }
+      })
     }
   }
+
 });
