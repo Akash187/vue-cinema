@@ -1,22 +1,20 @@
 <template>
   <div id="app">
     <navbar/>
-    <div v-if="this.$store.getters.alertMsg.length === 0">
-      <router-view :key="$route.fullPath"/>
-    </div>
-    <div v-else>
-      <h1 style="padding-top: 92px; text-align: center; color: red">{{this.$store.getters.alertMsg}}</h1>
-    </div>
+    <Alert/>
+    <router-view :key="$route.fullPath"/>
   </div>
 </template>
 
 <script>
   import Navbar from '@/components/Navbar.vue';
+  import Alert from '@/components/Alert.vue';
 
   export default {
     name: 'app',
     components: {
-      Navbar
+      Navbar,
+      Alert
     },
     created(){
       this.$store.dispatch('initFavourites');

@@ -11,7 +11,9 @@ export default new Vuex.Store({
     totalPage: 0,
     dataLoaded: false,
     error: false,
+    errorMsg: '',
     alertMsg: '',
+    showAlert: false,
     trendingMoviesUrl: `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.VUE_APP_API_KEY}`,
     topRatedMoviesUrl: `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.VUE_APP_API_KEY}`,
     nowPlayingMoviesUrl: `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.VUE_APP_API_KEY}`,
@@ -42,8 +44,14 @@ export default new Vuex.Store({
     error(state) {
       return state.error;
     },
+    errorMsg(state){
+      return state.errorMsg;
+    },
     alertMsg(state){
       return state.alertMsg;
+    },
+    showAlert(state){
+      return state.showAlert;
     },
     favouriteMovies(state){
       return state.favouriteMovies;
@@ -68,8 +76,15 @@ export default new Vuex.Store({
     updateError: (state, data) => {
       state.error = data;
     },
+    updateErrorMsg: (state, data) => {
+      state.errorMsg = data;
+    },
     updateAlertMsg: (state, data) => {
       state.alertMsg = data;
+      state.showAlert = true;
+      setTimeout(() => {
+        state.showAlert = false;
+      },2000);
     },
     updateSearchTerm: (state, term) => {
       state.searchTerm = term;
@@ -115,7 +130,7 @@ export default new Vuex.Store({
       filterMovies(url).then(({movies}) => {
         context.commit(mutation, movies);
       }).catch(() => {
-        context.commit('updateAlertMsg', 'Problem Fetching Movies');
+        context.commit('updateErrorMsg', 'Problem Fetching Movies');
       });
     },
     fetchSearchedMovies : (context, payload) => {
@@ -130,7 +145,7 @@ export default new Vuex.Store({
           context.commit('fetchSearchedMovies', result);
           resolve(context.getters.searchedMovies);
         }).catch(() => {
-          context.commit('updateAlertMsg', 'Problem Fetching Movies');
+          context.commit('updateErrorMsg', 'Problem Fetching Movies');
           reject('Problem Fetching Movies');
         });
       })
@@ -156,6 +171,7 @@ export default new Vuex.Store({
           }
           localStorage.setItem('favourites', JSON.stringify(updatedFavourites));
           context.commit('updateFavourites', updatedFavourites);
+          context.commit('updateAlertMsg', "Added to Favourites");
           resolve(context.getters.favouriteMovies);
         }catch (err){
           reject(err);
@@ -169,6 +185,7 @@ export default new Vuex.Store({
           let updatedFavourites = favourites.filter(favourite => favourite.id !== id);
           localStorage.setItem('favourites', JSON.stringify(updatedFavourites));
           context.commit('updateFavourites', updatedFavourites);
+          context.commit('updateAlertMsg', "Removed from Favourites");
           resolve(context.getters.favouriteMovies);
         }catch (err){
           reject(err);

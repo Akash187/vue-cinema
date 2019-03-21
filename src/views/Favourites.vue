@@ -18,7 +18,6 @@
     name: "favourites",
     computed: {
       favouriteMovies(){
-        console.log("fghgjghjh");
         return this.$store.getters.favouriteMovies;
       }
     },
