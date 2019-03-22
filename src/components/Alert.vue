@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="{ showAlert: isActive }" class="alert">
+    <div :class="{ showAlert: this.$store.getters.showAlert }" class="alert">
       {{this.$store.getters.alertMsg}}
     </div>
   </div>
@@ -8,18 +8,7 @@
 
 <script>
   export default {
-    name: "alert",
-    data(){
-      return{
-        isActive: false
-      }
-    },
-    mounted(){
-      let ref = this;
-      setInterval(() => {
-        ref.isActive = ref.$store.getters.showAlert;
-      },100);
-    }
+    name: "alert"
   }
 </script>
 
